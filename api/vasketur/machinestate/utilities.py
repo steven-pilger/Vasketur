@@ -7,11 +7,15 @@ from vasketur.machinestate.models import History
 URL_COOKIE = "https://web.vasketur.dk/PPW0083/Default.aspx"
 URL_MSTATE = "https://web.vasketur.dk/PPW0083/Machine/MachineGroupStat.aspx"
 
-USER_FIELD = "ctl00$ContentPlaceHolder1$tbUsername"
-PW_FIELD = "ctl00$ContentPlaceHolder1$tbPassword"
 
-USER = os.environ[USER_FIELD]
-PW = os.environ[PW_FIELD]
+USER_FIELD_KEY = "tbUsername"
+PW_FIELD_KEY = "tbPassword"
+USER_FIELD = "ctl00$ContentPlaceHolder1$" + USER_FIELD_KEY
+PW_FIELD = "ctl00$ContentPlaceHolder1$" + PW_FIELD_KEY
+
+USER = os.environ[USER_FIELD_KEY]
+PW = os.environ[PW_FIELD_KEY]
+
 
 STATE_IDs = {
     "V1_ID": "ctl00_ContentPlaceHolder1_Repeater1_ctl00_Repeater2_ctl00_Repeater3_ctl01_",
@@ -74,7 +78,8 @@ def extract_machine_state(machine_state_response):
     for key in STATE_IDs:
         field_id = STATE_IDs.get(key)
         if field_id:
-            state = r.html.find("#" + field_id + STATUS_FIELD)
+            field_id = "#" + field_id + STATUS_FIELD
+            state = r.html.find(field_id)
             state_list.extend(state)
     return state_list
 

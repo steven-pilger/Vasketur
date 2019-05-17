@@ -1,0 +1,54 @@
+version: '3.7'
+
+services:
+
+  db:
+    image: postgres:11-alpine
+    container_name: vasketur_db
+    env_file:
+      - ./auth.env
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./db/init-user-db.sh:/docker-entrypoint-initdb.d/init-user-db.sh
+    networks:
+      - web
+      - internal
+
+  api:
+    build:
+      context: ./api
+      target: production
+    container_name: vasketur_api
+    env_file:
+      - ./auth.env
+    volumes:
+      - ./api:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - internal
+
+  cron:
+    build:
+      context: ./api
+      target: cron
+    container_name: vasketur_api_cron
+    env_file:
+      - ./auth.env
+    volumes:
+      - ./api:/code
+    depends_on:
+      - db
+    restart: always
+    networks:
+      - internal
+
+networks:
+  internal:
+  web:
+    external: true
+
+volumes:
+  db:
