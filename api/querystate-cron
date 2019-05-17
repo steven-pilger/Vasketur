@@ -1,2 +1,2 @@
 # * * * * * echo "Hello World!" > /proc/1/fd/1 2>/proc/1/fd/2
-*/10 * * * * poetry run python manage.py querystate > /proc/1/fd/1 2>/proc/1/fd/2
+*/10 * * * * /root/.poetry/bin/poetry run python manage.py querystate > /proc/1/fd/1 2>/proc/1/fd/2
