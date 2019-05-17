@@ -11,9 +11,6 @@ from vasketur.machinestate.utilities import (
 )
 
 
-DEFAULT_ENGINE = "django.db.backends.postgresql_psycopg2"
-
-
 @pytest.fixture(scope="session")
 def fixture_init_session():
     session = initiate_session()
