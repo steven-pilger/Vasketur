@@ -21,7 +21,8 @@ def test_extract_cookie(fixture_cookie_request):
 
 def test_request_machine_state(fixture_machine_state):
     rms = fixture_machine_state
-    assert rms.status_code == 200
+    page_content = rms.html.text
+    assert "Glemt kode" not in page_content
 
 
 def test_extract_machine_state(fixture_machine_state):
